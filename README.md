@@ -1,4 +1,4 @@
-# Test Automatization Test
+# Test Automatization - Test for Sogeti
 
 ## Installation
 
