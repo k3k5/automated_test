@@ -9,9 +9,13 @@ class TestZippopotamRestAPI(unittest.TestCase):
         self.url = 'http://api.zippopotam.us/_country_/_postal-code_'        
 
     def test_rest_api_for_stuttgart(self):
+        # replaces URL's variable parts with test data
         self.url = self.url.replace('_country_', 'de')
         self.url = self.url.replace('_postal-code_', 'bw/stuttgart')
+
+        # sending GET request
         response = requests.get(self.url)
+        # ... and parsing JSON response to JSON Object
         response_text = json.loads(response.text)
 
         # Checking for header and meta information
@@ -41,13 +45,21 @@ class TestZippopotamRestAPI(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertLess(response.elapsed.total_seconds(), 1)
             self.assertEqual(response.headers.get('Content-Type'), 'application/json')
+            
+            # Checking for correct content
             self.assertEqual(response_text.get('places')[0].get('place name'), test.get('place_name'))
 
             # reset url back to normal
             self.url = 'http://api.zippopotam.us/_country_/_postal-code_'   
 
+    def find_data_for_post_code(self, post_code: str, response_text: list) -> dict:
+        """
+        Loops through list and returns the first matching postal code.
 
-    def find_data_for_post_code(self, post_code: str, response_text: list):
+        :param post_code: str: postal code to search for
+        :param response_text: list: places that has to be searched
+        :return: dict object that has a matching post_code|None
+        """
         for item in response_text:
             if item.get('post code') == post_code:
                 return item
