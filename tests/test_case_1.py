@@ -1,4 +1,5 @@
 import unittest
+import time
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -11,7 +12,10 @@ class TestSogetiWebsiteAutomationLink(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome('drivers/chromedriver')
 
-    def test_case_1(self):
+    def test_automation_link(self):
+        """
+        Moves to page "Automation" and checks if the navigation item has the selected CSS class.
+        """
         driver = self.driver
         driver.get("https://www.sogeti.com/")
 
@@ -30,12 +34,19 @@ class TestSogetiWebsiteAutomationLink(unittest.TestCase):
         self.assertTrue(automation_link.is_displayed())
         automation_link.click()
 
+        # Check if 'Automation' is in page title (tab title)
         self.assertIn("Automation", driver.title)
+        # ... and 'Automation' is present in page source.
         self.assertIn("Automation", driver.page_source)
 
+        # finding and hovering above navigation item 'Services' by XPATH
         services_link_li_holder = self.driver.find_element_by_xpath("/html/body/div[1]/header/div[1]/nav/ul/li[3]")
-        automation_link_li_holder = self.driver.find_element_by_xpath("/html/body/div[1]/header/div[1]/div[5]/ul/li[7]")
+        # finding the desired link 'Automation' by XPATH
+        automation_link_li_holder = self.driver.find_element_by_xpath('//*[@id="header"]/div[1]/nav/ul/li[3]/div[2]/ul/li[7]')
         utils.move_to_element(self.driver, services_link_li_holder)
+        # delay of 1 second that element is visible
+        time.sleep(1)
+        # asserting 'Services' link and 'Automation' link have CSS class 'selected'
         self.assertIn('selected', services_link_li_holder.get_attribute('class').split())
         self.assertIn('selected', automation_link_li_holder.get_attribute('class').split())
 
