@@ -50,7 +50,7 @@ class TestSogetiWebsiteWorldwideDropdown(unittest.TestCase):
         # Accept all cookies
         utils.accept_all_cookies(self.driver)
 
-        worldwide_dropdown_link = self.driver.find_element_by_xpath('//*[@id="header"]/div[1]/div[2]/div[2]/div[2]/div[2]')
+        worldwide_dropdown_link = self.driver.find_element_by_xpath('//*[@id="header"]/div[1]/div[2]/div[2]/div[2]')
         worldwide_dropdown_link.click()
 
         country_list = self.driver.find_element_by_class_name("country-list")
